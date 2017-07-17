@@ -95,6 +95,9 @@ public:
 	/// 获取报单引用基准
 	long long getStgOrderRefBase();
 
+	/// 获取报单引用基准(临时记录)
+	long long getStgTempOrderRefBase();
+
 	/// 获取报单
 	void OrderInsert(CThostFtdcInputOrderField *insert_order, Strategy *stg, string strategy_id);
 
@@ -225,6 +228,7 @@ private:
 	map<string, int> *stg_map_instrument_action_counter;
 	DBManager *dbm;
 	long long stg_order_ref_base;
+	long long stg_temp_order_ref_base;
 	CTP_Manager *o_ctp;
 	string isActive;
 	string trading_day;				// 交易日

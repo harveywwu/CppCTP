@@ -39,6 +39,7 @@ User::User(string frontAddress, string BrokerID, string UserID, string Password,
 	this->l_sessions = new list<Session *>();
 	this->stg_map_instrument_action_counter = new map<string, int>();
 	this->stg_order_ref_base = Utils::strtolonglong(stg_order_ref_base);
+	this->stg_temp_order_ref_base = Utils::strtolonglong(stg_order_ref_base);
 	this->isLogged = true;
 	this->isConnected = true;
 	this->isLoggedError = false;
@@ -110,6 +111,7 @@ User::User(string BrokerID, string UserID, int nRequestID, string stg_order_ref_
 	this->l_sessions = new list<Session *>();
 	this->stg_map_instrument_action_counter = new map<string, int>();
 	this->stg_order_ref_base = Utils::strtolonglong(stg_order_ref_base);
+	this->stg_temp_order_ref_base = Utils::strtolonglong(stg_order_ref_base);
 	this->isLogged = true;
 	this->isConnected = true;
 	this->isLoggedError = false;
@@ -448,6 +450,11 @@ void User::setStgOrderRefBase(long long stg_order_ref_base) {
 /// 获取报单引用基准
 long long User::getStgOrderRefBase() {
 	return this->stg_order_ref_base;
+}
+
+/// 获取报单引用基准(临时记录)
+long long User::getStgTempOrderRefBase() {
+	return this->stg_temp_order_ref_base;
 }
 
 void User::OrderInsert(CThostFtdcInputOrderField *insert_order, Strategy *stg, string strategy_id) {

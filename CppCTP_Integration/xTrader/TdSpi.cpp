@@ -2281,8 +2281,18 @@ void TdSpi::OnRtnOrder(CThostFtdcOrderField *pOrder) {
 
 			//this->current_user->DB_OnRtnOrder(this->current_user->getCTP_Manager()->getDBManager()->getConn(), pOrder);
 
+			// 根据OrderRef进行过滤
+			/*string str_temp_order_ref_base = temp.substr(0, 10);
+			long long long_temp_order_ref_base = Utils::strtolonglong(str_temp_order_ref_base);*/
+
 			this->current_user->getXtsLogger()->info("TdSpi::OnRtnOrder() 合约代码 = {} 报单引用 = {} 用户代码 = {} 交易所代码 = {} 组合开平标志 = {} 报单状态 = {}",
 				pOrder->InstrumentID, pOrder->OrderRef, pOrder->UserID, pOrder->ExchangeID, pOrder->CombOffsetFlag, pOrder->OrderStatus);
+
+			//// 报单基准值小于系统启动前的基准值不处理
+			//if (long_temp_order_ref_base <= (this->current_user->getStgTempOrderRefBase()))
+			//{
+			//	return;
+			//}
 
 			// 断线情况自恢复逻辑
 			if (this->current_user->getIsEverLostConnection())
@@ -2426,6 +2436,20 @@ void TdSpi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
 		string strategyid = "";
 
 		if (len_order_ref == 12 && result == "1") { // 通过本交易系统发出去的order长度12,首位字符为1
+
+
+			//// 根据OrderRef进行过滤
+			//string str_temp_order_ref_base = temp.substr(0, 10);
+			//long long long_temp_order_ref_base = Utils::strtolonglong(str_temp_order_ref_base);
+
+			//this->current_user->getXtsLogger()->info("TdSpi::OnRtnTrade() 合约代码 = {} 报单引用 = {} 用户代码 = {} 交易所代码 = {}",
+			//	pTrade->InstrumentID, pTrade->OrderRef, pTrade->UserID, pTrade->ExchangeID);
+
+			//// 报单基准值小于系统启动前的基准值不处理
+			//if (long_temp_order_ref_base <= (this->current_user->getStgTempOrderRefBase()))
+			//{
+			//	return;
+			//}
 
 			//this->current_user->DB_OnRtnOrder(this->current_user->GetOrderConn(), pOrder);
 			//delete[] codeDst;

@@ -154,9 +154,7 @@ User * CTP_Manager::CreateAccount(User *user, list<Strategy *> *l_strategys) {
 
 		//user->getUserTradeSPI()->QrySettlementInfoConfirm(user); // 确认交易结算
 		//sleep(1);
-		/// 设置初始化状态完成
-		user->setThread_Init_Status(true);
-
+		
 		/// 等待结束
 		user->getUserTradeAPI()->Join();
 	}
@@ -5996,7 +5994,7 @@ void CTP_Manager::thread_queue_Command() {
 
 		// 命令执行结果
 		int result = command->execute();
-
+		//Utils::printGreenColorWithKV("CTP_Manager::thread_queue_Command() result", result);
 		this->getXtsLogger()->info("CTP_Manager::thread_queue_Command() result = {}", result);
 
 		if (result == 0) {
@@ -6055,6 +6053,8 @@ void CTP_Manager::thread_queue_Command() {
 
 		// 更新最后一次命令类型
 		this->last_command_type = command->getCommandType();
+		//Utils::printGreenColorWithKV("CTP_Manager::thread_queue_Command() last_command_type", this->last_command_type);
+		this->getXtsLogger()->info("CTP_Manager::thread_queue_Command() last_command_type = {}", this->last_command_type);
 	}
 }
 
@@ -6279,13 +6279,10 @@ bool CTP_Manager::init(bool is_online) {
 
 	/// 绑定交易员和期货账户
 	for (user_itor = this->l_user->begin(); user_itor != this->l_user->end(); user_itor++) {
-		USER_PRINT((*user_itor)->getUserID());
-		USER_PRINT((*user_itor)->getTraderID());
 		(*user_itor)->setCTP_Manager(this); //每个user对象设置CTP_Manager对象
 		(*user_itor)->setDBManager(this->dbm); //每个user对象设置DBManager对象
 
 		for (trader_itor = this->l_obj_trader->begin(); trader_itor != this->l_obj_trader->end(); trader_itor++) {
-			USER_PRINT((*trader_itor)->getTraderID());
 			if ((*trader_itor)->getTraderID() == (*user_itor)->getTraderID()) {
 				(*user_itor)->setTrader((*trader_itor));
 			}
@@ -6297,12 +6294,10 @@ bool CTP_Manager::init(bool is_online) {
 	/// 绑定期货账户和策略
 	for (user_itor = this->l_user->begin(); user_itor != this->l_user->end(); user_itor++) { // 遍历User
 
-		USER_PRINT((*user_itor)->getUserID());
-
 		for (stg_itor = this->l_strategys->begin(); stg_itor != this->l_strategys->end(); stg_itor++) { // 遍历Strategy
 
 			if ((*stg_itor)->getStgUserId() == (*user_itor)->getUserID()) {
-				USER_PRINT("Strategy Bind To User");
+				
 				(*user_itor)->addStrategyToList((*stg_itor)); // 将策略添加到期货账户策略列表里
 				(*stg_itor)->setStgUser((*user_itor)); // 策略设置自己的期货账户对象
 				//(*stg_itor)->setStgTradingDay((*user_itor)->getTradingDay()); // 更新时间

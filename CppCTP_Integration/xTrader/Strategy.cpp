@@ -3565,11 +3565,11 @@ void Strategy::finish_pending_order_list() {
 			// 限价判断
 			// 如果是买,限价基础上加10个最小跳价格发单; 如果是卖,限价减10个最小跳发单
 			if ((*itor)->Direction = '0') { // 买
-				this->stg_b_order_insert_args->LimitPrice = (*itor)->LimitPrice + 10 * this->stg_b_price_tick;
+				this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, (*itor)->LimitPrice + 10 * this->stg_b_price_tick);
 			}
 			else if ((*itor)->Direction = '1') // 卖
 			{
-				this->stg_b_order_insert_args->LimitPrice = (*itor)->LimitPrice - 10 * this->stg_b_price_tick;
+				this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, (*itor)->LimitPrice - 10 * this->stg_b_price_tick);
 			}
 
 			// 数量
@@ -4019,7 +4019,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick);
 		//std::cout << "this->stg_a_order_insert_args->LimitPrice = " << this->stg_a_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_A_tick->BidPrice1 = " << this->stg_instrument_A_tick->BidPrice1 << std::endl;
 		//std::cout << "this->stg_a_limit_price_shift = " << this->stg_a_limit_price_shift << std::endl;
@@ -4040,7 +4040,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		//std::cout << "this->stg_b_order_insert_args->LimitPrice = " << this->stg_b_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_B_tick->AskPrice1 = " << this->stg_instrument_B_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_b_limit_price_shift = " << this->stg_b_limit_price_shift << std::endl;
@@ -4147,7 +4147,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick);
 		
 		//std::cout << "this->stg_instrument_A_tick->AskPrice1 = " << this->stg_instrument_A_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_spread_shift = " << this->stg_spread_shift << std::endl;
@@ -4170,7 +4170,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		// 数量
 		//this->stg_b_order_insert_args->VolumeTotalOriginal = order_volume;
 		// 买卖方向
@@ -4243,7 +4243,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick);
 		
 		//std::cout << "this->stg_instrument_A_tick->BidPrice1 = " << this->stg_instrument_A_tick->BidPrice1 << std::endl;
 		//std::cout << "this->stg_a_limit_price_shift = " << this->stg_a_limit_price_shift << std::endl;
@@ -4266,7 +4266,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		//std::cout << "this->stg_instrument_B_tick->AskPrice1 = " << this->stg_instrument_B_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_b_limit_price_shift = " << this->stg_b_limit_price_shift << std::endl;
 		//std::cout << "this->stg_b_price_tick = " << this->stg_b_price_tick << std::endl;
@@ -4336,7 +4336,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick);
 		//std::cout << "this->stg_a_order_insert_args->LimitPrice = " << this->stg_a_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_A_tick->AskPrice1 = " << this->stg_instrument_A_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_a_limit_price_shift = " << this->stg_a_limit_price_shift << std::endl;
@@ -4358,7 +4358,7 @@ void Strategy::Order_Algorithm_One() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		//std::cout << "this->stg_b_order_insert_args->LimitPrice = " << this->stg_b_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_B_tick->BidPrice1 = " << this->stg_instrument_B_tick->BidPrice1 << std::endl;
 		//std::cout << "this->stg_b_limit_price_shift = " << this->stg_b_limit_price_shift << std::endl;
@@ -4534,7 +4534,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick);
 		//std::cout << "this->stg_a_order_insert_args->LimitPrice = " << this->stg_a_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_A_tick->BidPrice1 = " << this->stg_instrument_A_tick->BidPrice1 << std::endl;
 		//std::cout << "this->stg_a_limit_price_shift = " << this->stg_a_limit_price_shift << std::endl;
@@ -4555,7 +4555,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		//std::cout << "this->stg_b_order_insert_args->LimitPrice = " << this->stg_b_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_B_tick->AskPrice1 = " << this->stg_instrument_B_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_b_limit_price_shift = " << this->stg_b_limit_price_shift << std::endl;
@@ -4680,7 +4680,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick);
 
 		//std::cout << "this->stg_instrument_A_tick->AskPrice1 = " << this->stg_instrument_A_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_spread_shift = " << this->stg_spread_shift << std::endl;
@@ -4703,7 +4703,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		// 数量
 		//this->stg_b_order_insert_args->VolumeTotalOriginal = order_volume;
 		// 买卖方向
@@ -4782,7 +4782,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->BidPrice1 - this->stg_a_limit_price_shift * this->stg_a_price_tick);
 
 		//std::cout << "this->stg_instrument_A_tick->BidPrice1 = " << this->stg_instrument_A_tick->BidPrice1 << std::endl;
 		//std::cout << "this->stg_a_limit_price_shift = " << this->stg_a_limit_price_shift << std::endl;
@@ -4805,7 +4805,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->AskPrice1 + this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		//std::cout << "this->stg_instrument_B_tick->AskPrice1 = " << this->stg_instrument_B_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_b_limit_price_shift = " << this->stg_b_limit_price_shift << std::endl;
 		//std::cout << "this->stg_b_price_tick = " << this->stg_b_price_tick << std::endl;
@@ -4880,7 +4880,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_a_order_insert_args->InstrumentID, this->stg_instrument_id_A.c_str());
 		// 限价
-		this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick;
+		this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->AskPrice1 + this->stg_a_limit_price_shift * this->stg_a_price_tick);
 		//std::cout << "this->stg_a_order_insert_args->LimitPrice = " << this->stg_a_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_A_tick->AskPrice1 = " << this->stg_instrument_A_tick->AskPrice1 << std::endl;
 		//std::cout << "this->stg_a_limit_price_shift = " << this->stg_a_limit_price_shift << std::endl;
@@ -4902,7 +4902,7 @@ void Strategy::Order_Algorithm_Two() {
 		// 合约代码
 		std::strcpy(this->stg_b_order_insert_args->InstrumentID, this->stg_instrument_id_B.c_str());
 		// 限价
-		this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick;
+		this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->BidPrice1 - this->stg_b_limit_price_shift * this->stg_b_price_tick);
 		//std::cout << "this->stg_b_order_insert_args->LimitPrice = " << this->stg_b_order_insert_args->LimitPrice << std::endl;
 		//std::cout << "this->stg_instrument_B_tick->BidPrice1 = " << this->stg_instrument_B_tick->BidPrice1 << std::endl;
 		//std::cout << "this->stg_b_limit_price_shift = " << this->stg_b_limit_price_shift << std::endl;
@@ -5292,12 +5292,12 @@ void Strategy::thread_queue_OnRtnOrder() {
 						if (pOrder->Direction == '0')
 						{
 							this->stg_a_order_insert_args->Direction = '1';
-							this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->BidPrice1;
+							this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->BidPrice1);
 						}
 						else if (pOrder->Direction == '1')
 						{
 							this->stg_a_order_insert_args->Direction = '0';
-							this->stg_a_order_insert_args->LimitPrice = this->stg_instrument_A_tick->AskPrice1;
+							this->stg_a_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_A_tick, this->stg_instrument_A_tick->AskPrice1);
 						}
 
 						// 开平仓标志位逆转
@@ -5347,10 +5347,10 @@ void Strategy::thread_queue_OnRtnOrder() {
 				strcpy(this->stg_b_order_insert_args->OrderRef, this->stg_order_ref_b.c_str());*/
 
 				if (pOrder->Direction == '0') {
-					this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->AskPrice1;
+					this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->AskPrice1);
 				}
 				else if (pOrder->Direction == '1') {
-					this->stg_b_order_insert_args->LimitPrice = this->stg_instrument_B_tick->BidPrice1;
+					this->stg_b_order_insert_args->LimitPrice = this->calibrate_limitPrice(this->stg_instrument_B_tick, this->stg_instrument_B_tick->BidPrice1);
 				}
 
 				this->stg_b_order_insert_args->VolumeTotalOriginal = pOrder->VolumeTotal;
@@ -6047,6 +6047,21 @@ bool Strategy::getEnd_task_morning_second() {
 
 void Strategy::setEnd_task_morning_second(bool end_task_morning_second) {
 	this->end_task_morning_second = end_task_morning_second;
+}
+
+// 价格触及涨停,跌停价自动设置
+double Strategy::calibrate_limitPrice(CThostFtdcDepthMarketDataField *tick, double price) {
+	if (price >= (tick->UpperLimitPrice)) // 价格大于等于涨停板价格，返回涨停板价格
+	{
+		return tick->UpperLimitPrice;
+	}
+	else if (price <= (tick->LowerLimitPrice)) // 价格小于等于跌停板价格，返回跌停板价格
+	{
+		return tick->LowerLimitPrice;
+	}
+	else {
+		return price;
+	}
 }
 
 // 报单录入错误回报

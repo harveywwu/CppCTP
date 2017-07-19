@@ -186,6 +186,30 @@ CTP_Manager.cpp.s:
 	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/CTP_Manager.cpp.s
 .PHONY : CTP_Manager.cpp.s
 
+ConfirmSettlementInfoCommand.o: ConfirmSettlementInfoCommand.cpp.o
+.PHONY : ConfirmSettlementInfoCommand.o
+
+# target to build an object file
+ConfirmSettlementInfoCommand.cpp.o:
+	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/ConfirmSettlementInfoCommand.cpp.o
+.PHONY : ConfirmSettlementInfoCommand.cpp.o
+
+ConfirmSettlementInfoCommand.i: ConfirmSettlementInfoCommand.cpp.i
+.PHONY : ConfirmSettlementInfoCommand.i
+
+# target to preprocess a source file
+ConfirmSettlementInfoCommand.cpp.i:
+	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/ConfirmSettlementInfoCommand.cpp.i
+.PHONY : ConfirmSettlementInfoCommand.cpp.i
+
+ConfirmSettlementInfoCommand.s: ConfirmSettlementInfoCommand.cpp.s
+.PHONY : ConfirmSettlementInfoCommand.s
+
+# target to generate assembly for a file
+ConfirmSettlementInfoCommand.cpp.s:
+	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/ConfirmSettlementInfoCommand.cpp.s
+.PHONY : ConfirmSettlementInfoCommand.cpp.s
+
 DBManager.o: DBManager.cpp.o
 .PHONY : DBManager.o
 
@@ -401,6 +425,30 @@ PositionDetail.s: PositionDetail.cpp.s
 PositionDetail.cpp.s:
 	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/PositionDetail.cpp.s
 .PHONY : PositionDetail.cpp.s
+
+QrySettlementInfoCommand.o: QrySettlementInfoCommand.cpp.o
+.PHONY : QrySettlementInfoCommand.o
+
+# target to build an object file
+QrySettlementInfoCommand.cpp.o:
+	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/QrySettlementInfoCommand.cpp.o
+.PHONY : QrySettlementInfoCommand.cpp.o
+
+QrySettlementInfoCommand.i: QrySettlementInfoCommand.cpp.i
+.PHONY : QrySettlementInfoCommand.i
+
+# target to preprocess a source file
+QrySettlementInfoCommand.cpp.i:
+	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/QrySettlementInfoCommand.cpp.i
+.PHONY : QrySettlementInfoCommand.cpp.i
+
+QrySettlementInfoCommand.s: QrySettlementInfoCommand.cpp.s
+.PHONY : QrySettlementInfoCommand.s
+
+# target to generate assembly for a file
+QrySettlementInfoCommand.cpp.s:
+	$(MAKE) -f CMakeFiles/quant_ctp_XTrader.dir/build.make CMakeFiles/quant_ctp_XTrader.dir/QrySettlementInfoCommand.cpp.s
+.PHONY : QrySettlementInfoCommand.cpp.s
 
 QrySettlementInfoConfirmCommand.o: QrySettlementInfoConfirmCommand.cpp.o
 .PHONY : QrySettlementInfoConfirmCommand.o
@@ -660,6 +708,9 @@ help:
 	@echo "... CTP_Manager.o"
 	@echo "... CTP_Manager.i"
 	@echo "... CTP_Manager.s"
+	@echo "... ConfirmSettlementInfoCommand.o"
+	@echo "... ConfirmSettlementInfoCommand.i"
+	@echo "... ConfirmSettlementInfoCommand.s"
 	@echo "... DBManager.o"
 	@echo "... DBManager.i"
 	@echo "... DBManager.s"
@@ -687,6 +738,9 @@ help:
 	@echo "... PositionDetail.o"
 	@echo "... PositionDetail.i"
 	@echo "... PositionDetail.s"
+	@echo "... QrySettlementInfoCommand.o"
+	@echo "... QrySettlementInfoCommand.i"
+	@echo "... QrySettlementInfoCommand.s"
 	@echo "... QrySettlementInfoConfirmCommand.o"
 	@echo "... QrySettlementInfoConfirmCommand.i"
 	@echo "... QrySettlementInfoConfirmCommand.s"

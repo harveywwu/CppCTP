@@ -766,6 +766,9 @@ public:
 
 	void setEnd_task_morning_second(bool end_task_morning_second);
 
+	// 价格触及涨停,跌停价自动设置
+	double calibrate_limitPrice(CThostFtdcDepthMarketDataField *tick, double price);
+
 private:
 	Trader *trader;
 	User *user;

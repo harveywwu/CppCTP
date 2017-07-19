@@ -6051,8 +6051,7 @@ void Strategy::setEnd_task_morning_second(bool end_task_morning_second) {
 
 // 价格触及涨停,跌停价自动设置
 double Strategy::calibrate_limitPrice(CThostFtdcDepthMarketDataField *tick, double price) {
-	// 价格大于等于涨停板价格，返回涨停板价格
-	if (price >= (tick->UpperLimitPrice))
+	if (price >= (tick->UpperLimitPrice)) // 价格大于等于涨停板价格，返回涨停板价格
 	{
 		return tick->UpperLimitPrice;
 	}

@@ -147,7 +147,11 @@ void MdSpi::Login(char *BrokerID, char *UserID, char *Password) {
 	strcpy(loginField->BrokerID, BrokerID);
 	strcpy(loginField->UserID, UserID);
 	strcpy(loginField->Password, Password);
-	this->mdapi->ReqUserLogin(loginField, this->loginRequestID);
+	int error_num = this->mdapi->ReqUserLogin(loginField, this->loginRequestID);
+	if (error_num != 0)
+	{
+		Utils::printRedColorWithKV("MdSpi::Login() 请求错误 = ", error_num);
+	}
 	
 	/*int ret = this->controlTimeOut(&login_sem);
 	if (ret == -1) {

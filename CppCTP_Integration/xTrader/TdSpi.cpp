@@ -10,6 +10,9 @@
 #include "Debug.h"
 #include "Session.h"
 #include "LoginCommand.h"
+#include "QrySettlementInfoCommand.h"
+#include "ConfirmSettlementInfoCommand.h"
+#include "QrySettlementInfoConfirmCommand.h"
 
 //转码数组
 char codeDst[255];
@@ -302,7 +305,6 @@ int TdSpi::QrySettlementInfoConfirm(User *user) {
 	strcpy(qrySettlementField.BrokerID, user->getBrokerID().c_str());
 	strcpy(qrySettlementField.InvestorID, user->getUserID().c_str());
 
-	sleep(1);
 	int request_error = this->tdapi->ReqQrySettlementInfoConfirm(&qrySettlementField, user->getRequestID());
 
 	/*int ret = this->controlTimeOut(&sem_ReqQrySettlementInfoConfirm);
@@ -328,9 +330,15 @@ void TdSpi::OnRspQrySettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *
 					std::cout << "\t|确认日期" << this->getCharTradingDate() << "|" << endl;
 					std::cout << "\t|交易时间" << this->tdapi->GetTradingDay() << "|" << endl;
 					std::cout << "\t|================|" << endl;
+
+					/// 设置初始化状态完成
+					this->current_user->setThread_Init_Status(true);
+
 				} else {
-					sleep(1);
-					this->QrySettlementInfo(this->current_user);
+					// this->QrySettlementInfo(this->current_user);
+					// 查询结算信息
+					QrySettlementInfoCommand *command_qrysettlementinfo = new QrySettlementInfoCommand(this, this->current_user, 0);
+					this->getCtpManager()->addCommand(command_qrysettlementinfo);
 				}
 			} else {
 				Utils::printGreenColor("TdSpi::OnRspQrySettlementInfoConfirm() 结算信息不为空,今天已经确认过结算!");
@@ -343,26 +351,29 @@ void TdSpi::OnRspQrySettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *
 				std::cout << "\t|================|" << endl;
 				//std::chrono::milliseconds sleepDuration(15 * 1000);
 				//sleep(1);
+
+				/// 设置初始化状态完成
+				this->current_user->setThread_Init_Status(true);
 			}
 	}
 	}
 }
 
 //查询结算信息
-void TdSpi::QrySettlementInfo(User *user) {
+int TdSpi::QrySettlementInfo(User *user) {
 	CThostFtdcQrySettlementInfoField pQrySettlementInfo;
 
 	strcpy(pQrySettlementInfo.BrokerID, user->getBrokerID().c_str());
 	strcpy(pQrySettlementInfo.InvestorID, user->getUserID().c_str());
-
 	strcpy(pQrySettlementInfo.TradingDay, "");
-	sleep(1);
-	this->tdapi->ReqQrySettlementInfo(&pQrySettlementInfo, user->getRequestID());
+
+	int error_num = this->tdapi->ReqQrySettlementInfo(&pQrySettlementInfo, user->getRequestID());
 
 	/*int ret = this->controlTimeOut(&sem_ReqQrySettlementInfo);
 	if (ret == -1) {
 		USER_PRINT("TdSpi::QrySettlementInfo TimeOut!")
 	}*/
+	return error_num;
 }
 
 //请求查询投资者结算结果响应
@@ -388,8 +399,11 @@ void TdSpi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInf
 			}
 
 			if (bIsLast) {
-				//确认投资者结算结果
-				this->ConfirmSettlementInfo(this->current_user);
+				// 确认投资者结算结果
+				//this->ConfirmSettlementInfo(this->current_user);
+				// 确认投资者结算结果
+				ConfirmSettlementInfoCommand *command_confirmsettlementinfo = new ConfirmSettlementInfoCommand(this, this->current_user, 0);
+				this->getCtpManager()->addCommand(command_confirmsettlementinfo);
 			}
 		}
 		
@@ -397,20 +411,20 @@ void TdSpi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInf
 }
 
 //确认结算结果
-void TdSpi::ConfirmSettlementInfo(User *user) {
+int TdSpi::ConfirmSettlementInfo(User *user) {
 
 	CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm;
 	strcpy(pSettlementInfoConfirm.BrokerID, user->getBrokerID().c_str());
 	strcpy(pSettlementInfoConfirm.InvestorID, user->getUserID().c_str());
 	strcpy(pSettlementInfoConfirm.ConfirmDate, this->tdapi->GetTradingDay());
 
-	sleep(1);
-	this->tdapi->ReqSettlementInfoConfirm(&pSettlementInfoConfirm, user->getRequestID());
+	int error_num = this->tdapi->ReqSettlementInfoConfirm(&pSettlementInfoConfirm, user->getRequestID());
 
 	/*int ret = this->controlTimeOut(&sem_ReqSettlementInfoConfirm);
 	if (ret == -1) {
 		USER_PRINT("TdSpi::ConfirmSettlementInfo")
 	}*/
+	return error_num;
 }
 
 //投资者结算结果确认响应
@@ -443,7 +457,12 @@ void TdSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSe
 			}
 
 			if (bIsLast) {
-				this->QrySettlementInfoConfirm(this->current_user);
+				// 再次查询投资者结算
+				// this->QrySettlementInfoConfirm(this->current_user);
+				
+				// 确认结算后再次查询投资者结算信息
+				QrySettlementInfoConfirmCommand *command_qrysettlementinfoconfirm = new QrySettlementInfoConfirmCommand(this, this->current_user, 0);
+				this->getCtpManager()->addCommand(command_qrysettlementinfoconfirm);
 			}
 		}
 	}

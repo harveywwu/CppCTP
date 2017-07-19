@@ -90,14 +90,14 @@ public:
                                        CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	//查询结算信息
-	void QrySettlementInfo(User *user);
+	int QrySettlementInfo(User *user);
 
     //请求查询投资者结算结果响应
     void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo,
                                 CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	//确认结算结果
-	void ConfirmSettlementInfo(User *user);
+	int ConfirmSettlementInfo(User *user);
 
     //投资者结算结果确认响应
     void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm,
